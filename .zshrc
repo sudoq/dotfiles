@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/Users/sijo/.oh-my-zsh
+export ZSH=/Users/simonlindroos/.oh-my-zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -54,7 +54,7 @@ zstyle ':completion:*' menu select
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git shrink-path)
+plugins=(git shrink-path kubetail)
 
 # User configuration
 
@@ -94,6 +94,7 @@ export GOPATH=$HOME/Projects/go
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:$HOME/Projects/go/bin
 export PATH=$PATH:$HOME/bin
+export PATH=$PATH:$HOME/bin/kafka/bin
 export EDITOR="vim"
 export ANSIBLE_NOCOWS=1
 # eval "$(pyenv init -)"
@@ -151,3 +152,56 @@ function fixdns {
 }
 
 export OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES
+
+export PATH="/Users/simonlindroos/Library/Python/2.7/bin:$PATH"
+export PATH="/Users/simonlindroos/Library/Python/3.8/bin:$PATH"
+
+source <(kubectl completion zsh)
+source <(skaffold completion zsh)
+source <(minikube completion zsh)
+
+export LC_ALL=en_US.UTF-8
+export LANG=en_US.UTF-8
+
+export CLICOLOR=1
+export TERM=xterm-256color
+
+# tabtab source for packages
+# uninstall by removing these lines
+[[ -f ~/.config/tabtab/__tabtab.zsh ]] && . ~/.config/tabtab/__tabtab.zsh || true
+
+function k8s_pod_resources() {
+  namespace="${1:-default}"
+  columns="\
+    NAME:.metadata.name,\
+    CPU(Req):.spec.containers[*].resources.requests.cpu,\
+    MEM(Req):.spec.containers[*].resources.requests.memory,\
+    CPU(Lim):.spec.containers[*].resources.limits.cpu,\
+    MEM(Lim):.spec.containers[*].resources.limits.memory"
+  resources=$(kubectl -n $namespace get pod -o custom-columns=$(echo $columns | tr -d ' '))
+  usage=$(kubectl -n $namespace top pods)
+  join --nocheck-order <(echo "$resources") <(echo "$usage") | column -t
+}
+function k8s_node_resources() {
+  columns="\
+    NAME:.metadata.name,\
+    CPU(Cap):.status.capacity.cpu,\
+    MEM(Cap):.status.capacity.memory,\
+    CPU(Alloc):.status.allocatable.cpu,\
+    MEM(Alloc):.status.allocatable.memory"
+  resources=$(kubectl get node -o custom-columns=$(echo $columns | tr -d ' '))
+  usage=$(kubectl top node)
+  join --nocheck-order <(echo "$resources") <(echo "$usage") | column -t
+}
+
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/simonlindroos/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/simonlindroos/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/simonlindroos/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/simonlindroos/google-cloud-sdk/completion.zsh.inc'; fi

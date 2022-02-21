@@ -1,30 +1,114 @@
-"Pathogen Plugin
-"execute pathogen#infect()
+" BASIC SETUP:
 
-" Pathogen load
-filetype off
+" enter the current millenium
+set nocompatible
 
-call pathogen#infect()
-call pathogen#helptags()
+" enable syntax and plugins (for netrw)
+syntax enable
+filetype plugin indent on
+
+" FINDING FILES:
+
+" Search down into subfolders
+" Provides tab-completion for all file-related tasks
+set path+=**
+
+" Display all matching files when we tab complete
+set wildmenu
+
+" NOW WE CAN:
+" - Hit tab to :find by partial match
+" - Use * to make it fuzzy
+
+" THINGS TO CONSIDER:
+" - :b lets you autocomplete any open buffer
+
+" TAG JUMPING:
+
+" Create the `tags` file (may need to install ctags first)
+command! MakeTags !ctags -R .
+
+" NOW WE CAN:
+" - Use ^] to jump to tag under cursor (ctrl-])
+" - Use g^] for ambiguous tags
+" - Use ^t to jump back up the tag stack
+
+" THINGS TO CONSIDER:
+" - This doesn't help if you want a visual list of tags
+
+" AUTOCOMPLETE:
+
+" The good stuff is documented in |ins-completion|
+
+" HIGHLIGHTS:
+" - ^x^n for JUST this file
+" - ^x^f for filenames (works with our path trick!)
+" - ^x^] for tags only
+" - ^n for anything specified by the 'complete' option
+
+" NOW WE CAN:
+" - Use ^n and ^p to go back and forth in the suggestion list
+
+" FILE BROWSING:
+
+" Tweaks for browsing
+let g:netrw_banner=0        " disable annoying banner
+" let g:netrw_browse_split=4  " open in prior window
+" let g:netrw_altv=1          " open splits to the right
+" let g:netrw_liststyle=3     " tree view
+" let g:netrw_list_hide=netrw_gitignore#Hide()
+" let g:netrw_list_hide.=',\(^\|\s\s\)\zs\.\S\+'
+
+" NOW WE CAN:
+" - :edit a folder to open a file browser
+" - <CR>/v/t to open in an h-split/v-split/tab
+" - check |netrw-browse-maps| for more mappings
+
+" SNIPPETS:
+
+" Read an empty HTML template and move cursor to title
+" nnoremap ,html :-1read $HOME/.vim/.skeleton.html<CR>3jwf>a
+
+" NOW WE CAN:
+" - Take over the world!
+"   (with much fewer keystrokes)
+
+" BUILD INTEGRATION:
+
+" Steal Mr. Bradley's formatter & add it to our spec_helper
+" http://philipbradley.net/rspec-into-vim-with-quickfix
+
+" Configure the `make` command to run RSpec
+" set makeprg=bundle\ exec\ rspec\ -f\ QuickfixFormatter
+
+" NOW WE CAN:
+" - Run :make to run RSpec
+" - :cl to list errors
+" - :cc# to jump to error by number
+" - :cn and :cp to navigate forward and back
 
 "Visual
 syntax on
 set ruler
 set number
+set t_Co=256
 "colorscheme molokai
 "colorscheme railscasts
 "colorscheme onedark
-"colorscheme ayu
-colorscheme horizon
-filetype plugin indent on
+colorscheme ayu
+"colorscheme horizon
+"let g:solarized_termcolors=256
+"set background=dark
+"colorscheme solarized
 
 set gfn=Monospace\ 9
 set autoindent
 set number
 set tabstop=2
 set shiftwidth=2
-set noexpandtab
+"set noexpandtab
 "set expandtab "soft tab
+set softtabstop=0 expandtab smarttab
 
 set encoding=utf-8
 set fileencoding=utf-8
@@ -82,51 +166,15 @@ noremap <C-ScrollWheelRight> <nop>
 "noremap k <NOP>
 "noremap l <NOP>
 
-"Terminal colors
-set t_Co=256
-
-"Tab list pipes
-"set listchars=tab:\|-
-"set list
-
-"80 char alert
-"if exists('+colorcolumn')
-"	set colorcolumn=80
-"else
-"	au BufWinEnter * let w:m2=matchadd('ErrorMsg', '\%>80v.\+', -1)
-"endif
-
-"This solution for the 80 char problem highlights any text over 80 char.
-"highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-"match OverLength /\%81v.\+/
-
 "Highlight cursor line
 set cul
 hi CursorLine term=none cterm=none ctermbg=236
 
-"GLSL Syntax highlighting
-au BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl,*.fs,*.vs setf glsl
-
 "Workaround to enable :Explore as :E and not :Ex
 let g:loaded_logipat = 1
 
-"Font fix for windows
-if has("gui_running")
-  if has("gui_gtk2")
-    set guifont=Monospace\ 9
-  elseif has("gui_macvim")
-    set guifont=Menlo\ Regular:h14
-  elseif has("gui_win32")
-    set guifont=Consolas:h11:cANSI
-  endif
-endif
-
 "Disable beeping sound
 set noeb novb t_vb=
-
-"Dash keybindings
-let mapleader=" "
-nmap <silent> <leader>d <Plug>DashSearch
 
 "No freaking bells!
 set noerrorbells
@@ -136,12 +184,6 @@ autocmd! GUIEnter * set vb t_vb=
 
 highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
-
-let g:pymode_indent = 0
-
-if exists("g:gui_oni")
-	colorscheme onedark
-endif
 
 set termguicolors
 

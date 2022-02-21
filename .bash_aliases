@@ -9,6 +9,8 @@ alias gcm="git commit -m"
 alias glog="git log --oneline --abbrev-commit --all --graph --decorate --color"
 alias gap="git add -p"
 alias gcop="git checkout -p"
+alias gps="git push --set-upstream origin \`git rev-parse --abbrev-ref HEAD\`"
+alias gpp="git please"
 alias mk="make"
 alias gofmtrec="go fmt ./..."
 alias dclean="docker rm \`docker ps -aq\`"
@@ -30,20 +32,33 @@ alias pi='python -m pip install -r requirements.txt'
 alias pc='pip-compile'
 alias cpwd='pwd | pbcopy'
 alias ppwd="cd \`pbpaste\`"
+alias mattock="gource --seconds-per-day 0.1 --auto-skip-seconds 0.1 --file-idle-time 0 -1280x720 --hide dirnames,filenames"
+alias tf="terraform"
+alias prw="gh pr create --web"
 
 # Kubernetes
-alias kc='kubectl'
+alias k='kubectl'
 alias kt='kubetail'
-alias kca='kubectl apply -f'
-alias kcv='kubectl config view'
-alias kce='kubectl exec -it'
+alias kaf='kubectl apply -f'
+alias kdf='kubectl delete -f'
+alias kls='kubectl get all'
+alias kc='kubectx'
+#alias kcv='kubectl config view'
+#alias kce='kubectl exec -it'
 alias kcl='kubectl logs -f'
-alias kcg='kubectl get'
-alias kcgp='kubectl get pod'
-alias kcgd='kubectl get deployment'
-alias kcdsc='kubectl describe'
-alias kcdel='kubectl delete'
-alias kcpf='kubectl port-forward'
+#alias kcg='kubectl get'
+#alias kcgp='kubectl get pod'
+#alias kcgd='kubectl get deployment'
+#alias kcdsc='kubectl describe'
+#alias kcdel='kubectl delete'
+#alias kcpf='kubectl port-forward'
+alias kst='kustomize'
+alias sk='skaffold'
+alias skr='skaffold run -l skaffold.dev/run-id=static -l app.kubernetes.io/managed-by=skaffold --status-check=false'
+alias skd='skaffold -p dev'
+alias ski='skaffold -p integration'
+alias sks='skaffold -p sandbox'
+alias skp='skaffold -p prod'
 
 ## Use envsubst to do simple variable replacement in for example ingress files.
 #alias envsubst='/usr/local/Cellar/gettext/0.19.8.1/bin/envsubst'
@@ -67,7 +82,7 @@ alias aplpv='time ansible-playbook --ask-vault-pass -i environments/production/i
 
 # Init aliases
 alias cdev='color blue'
-alias cops='fenv; color orange'
+alias cops='color orange'
 alias cauto='color yellow'
 alias ctool='color yellow'
 alias ctest='color green'
